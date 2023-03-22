@@ -8,9 +8,7 @@ class Database {
     constructor() {
         this._connect();
     }
-
     _connect() {
-        console.log(server + " " + DBName)
         mongoose
             .connect(mongoURL)
             .then(() => {

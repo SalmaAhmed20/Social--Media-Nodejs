@@ -1,7 +1,7 @@
 const CustomError = require('./customerr')
 
 require('dotenv').config()
-const requiredEnvs = ['MONGO_URL', 'JWT_SECRET', 'DATABASE']
+const requiredEnvs = ['MONGO_URL', 'JWT_SECRET']
 const missingEnvs = requiredEnvs.filter(env => !process.env[env])
 if (missingEnvs.length) {
     throw new CustomError(`missing envs ${missingEnvs.join(',')}`, 500)
