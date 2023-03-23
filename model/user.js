@@ -12,8 +12,11 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     role: {
-        type: String
-    }
+        type: String,
+        enum: ['admin', 'creator', 'user'],
+        default: 'user'
+    },
+    imageURL:String
 }, {
     toJSON: {
         transform: (doc, ret) => {
@@ -28,7 +31,7 @@ UserSchema.pre('save', async function (next) {
     const user = this;
     console.log(user)
     if (user.isModified('password')) {
-        const hashedpassword = await bcrypt.hash(user.password, saltRound);
+        const hashedpassword = await bcrypt.hash(user.password, Number(saltRound));
         user.password = hashedpassword;
     }
     console.log(user)

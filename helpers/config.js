@@ -11,5 +11,8 @@ module.exports = {
     mongoURL: process.env.MONGO_URL,
     database: process.env.DATABASE,
     jwtSecret: process.env.JWT_SECRET,
-    port: process.env.PORT
+    port: process.env.PORT,
+    cloudName:process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    apiSecret:process.env.CLOUDINARY_API_SECRET
 }
