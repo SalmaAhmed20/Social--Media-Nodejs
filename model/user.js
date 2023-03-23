@@ -13,7 +13,11 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String
-    }
+    },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Posts"
+    }]
 }, {
     toJSON: {
         transform: (doc, ret) => {
