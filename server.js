@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 const { cloudnaryconf} = require('./helpers/cloudnary');
 app.get('/', (req, res) => {
-    res.send('  Welcome to Social Media world \n Login to see the content ')
+    res.send('  Welcome to Social Media world \n Login to see the content using /user/login')
 })
 app.use('/user',userRoutes)
 app.listen(port, () => {
