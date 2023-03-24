@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 //var idvalidator = require('mongoose-id-validator');
 const postSchema = new mongoose.Schema({
-    _id: {
-        type: Number,
-        
-    },
+    _id:Number,
     text: {
          type: String,
          maxLength: 500,
@@ -18,18 +15,21 @@ const postSchema = new mongoose.Schema({
     },    
 },
 {
-    collection: 'posts'
-},
-{
     toJSON: {
         transform: (doc, ret) => {
             delete ret.__v;
+            delete ret.role;
+            delete ret.imageURL
             return ret
         }
     }
 }
 );
-
+postSchema.virtual("info",{
+    ref:"Users",
+    foreignField:"userId",
+    localField:"_id"
+});
 //postSchema.plugin(idvalidator);
 const Post = mongoose.model("Posts",postSchema);
 module.exports = { Post };

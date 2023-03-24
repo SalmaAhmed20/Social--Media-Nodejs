@@ -15,9 +15,7 @@ const vaildateSignin = (req, res, next) => {
 }
 //post
 const postSchema = Joi.object({
-    _id: Joi.number().required(),
-    text: Joi.string().min(3).max(500).required(),
-    userId: Joi.string().required()
+    text: Joi.string().min(3).max(500).required()
 })
 const vaildatePostCreation = (req, res, next) => {
     const { error } = postSchema.validate(req.body);
