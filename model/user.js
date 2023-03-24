@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
         default: 'user'
     },
     posts: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Number,
         ref: "Posts"
     }],
     imageURL:String

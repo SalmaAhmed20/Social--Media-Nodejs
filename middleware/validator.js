@@ -13,6 +13,35 @@ const vaildateSignin = (req, res, next) => {
     }
     next();
 }
+//post
+const postSchema = Joi.object({
+    _id: Joi.number().required(),
+    text: Joi.string().min(3).max(500).required(),
+    userId: Joi.string().required()
+})
+const vaildatePostCreation = (req, res, next) => {
+    const { error } = postSchema.validate(req.body);
+    if (error) {
+        const err = new Error(error.details[0].message);
+        err.statusCode = 400;
+        return next(err);
+    }
+    next();
+}
+const updatePostSchema = Joi.object({
+    text: Joi.string().min(3).max(500).required()
+})
+const vaildatePostUpdate = (req, res, next) => {
+    const { error } = updatePostSchema.validate(req.body);
+    if (error) {
+        const err = new Error(error.details[0].message);
+        err.statusCode = 400;
+        return next(err);
+    }
+    next();
+}
 module.exports = {
     vaildateSignin,
+    vaildatePostCreation,
+    vaildatePostUpdate
 }
