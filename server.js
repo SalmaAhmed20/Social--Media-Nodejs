@@ -5,6 +5,7 @@ const conn = require('./database/dbConn'); //connection to database
 const { port } = require('./helpers/config'); //getting the information
 const userRoutes = require('./routes/userroutes');
 const postRoutes = require('./routes/postroutes');
+const commentRoutes = require('./routes/commentroutes');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
@@ -12,6 +13,7 @@ app.use(cors())
 app.get('/', (req, res) => {
     res.send('  Welcome to Social Media world \n Login to see the content using /user/login ')
 })
+app.use('/comments',commentRoutes)
 app.use('/user',userRoutes);
 app.use('/post',postRoutes)
 app.listen(port, () => {

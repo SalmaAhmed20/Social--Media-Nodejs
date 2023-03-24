@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const path = require('node:path');
-
 const express = require('express');
 const router = express.Router();
 const JWT = require('jsonwebtoken');
