@@ -19,6 +19,7 @@ router.post("/create", verify.creationVer, validator.vaildatePostCreation, async
   console.log(userId);
   try {
     let newPost = new Post({
+      _id,
       text,
       userId
     })
