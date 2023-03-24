@@ -1,3 +1,4 @@
+const { json } = require('express');
 const mongoose = require('mongoose');
 //var idvalidator = require('mongoose-id-validator');
 const postSchema = new mongoose.Schema({
@@ -8,10 +9,9 @@ const postSchema = new mongoose.Schema({
         minLength: 3,
         required: true
     },
-
     commentIds: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comments",
+        type: mongoose.Schema.Types.Array,
+        ref: "comments",
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,6 +20,12 @@ const postSchema = new mongoose.Schema({
     }
 },
     {
+        toObject: {
+            transform: function (doc, ret) {
+              delete ret.commentIds._Postid;
+              return ret
+            }
+          },
         toJSON: {
             transform: (doc, ret) => {
                 delete ret.__v;
@@ -34,6 +40,11 @@ const postSchema = new mongoose.Schema({
 postSchema.virtual("info", {
     ref: "Users",
     foreignField: "userId",
+    localField: "_id"
+});
+postSchema.virtual("commentinfo", {
+    ref: "comments",
+    foreignField: "commentIds",
     localField: "_id"
 });
 //postSchema.plugin(idvalidator);

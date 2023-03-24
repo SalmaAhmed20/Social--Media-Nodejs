@@ -7,7 +7,7 @@ const commentSchema = new mongoose.Schema({
         required: true
     },
     commenterid: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Array,
         ref: "Users",
     },
     Postid: {
@@ -18,9 +18,12 @@ const commentSchema = new mongoose.Schema({
     toJSON: {
         transform: (doc, ret) => {
             delete ret.__v;
+            delete ret.commenterid.role;
+            delete ret.commenterid._id;
+            delete ret.commenterid.posts;
             return ret
         }
     }
 });
 const Comment = mongoose.model("comments", commentSchema);
-module.exports = {Comment};
+module.exports = { Comment };
