@@ -134,7 +134,7 @@ router.patch('/:_id', verify, async (req, res, next) => {
     console.log(req.user.role);
     if (!req.body.role || req.user.role == "admin") {
       if (req.user.role == "admin") {
-        updatedUser = await User.findByIdAndUpdate({ _id: req.params._id }, req.body, { new: true }).populate("posts")
+        updatedUser = await User.findByIdAndUpdate({ _id: req.params._id }, req.body, { new: true })
       } else if (req.user._id == req.params._id)
         updatedUser = await User.findByIdAndUpdate({ _id: req.params._id }, req.body, { new: true })
       else
