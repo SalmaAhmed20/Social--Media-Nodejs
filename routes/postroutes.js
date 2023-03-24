@@ -68,7 +68,7 @@ router.get("/all", verify2,async (req, res, next) => {
   try {
     var users = await User.find();
     console.log(users);
-    var posts =  (req.user.role !=="admin")?await Post.find({"userId":req.user._id}).populate({path:"userId"}):await Post.find().populate({path:"userId"});
+    var posts =  await Post.find().populate({path:"userId"}).populate("commentIds");
     res.send(posts);
   }
   catch (err) {
