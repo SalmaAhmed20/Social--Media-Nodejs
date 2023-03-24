@@ -5,6 +5,7 @@ const conn = require('./database/dbConn'); //connection to database
 const { port } = require('./helpers/config'); //getting the information
 const userRoutes = require('./routes/userroutes');
 const postRoutes = require('./routes/postroutes');
+const reviewRoutes = require('./routes/reviewroutes');
 const commentRoutes = require('./routes/commentroutes');
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 app.use('/comments',commentRoutes)
 app.use('/user',userRoutes);
 app.use('/post',postRoutes)
+app.use('/review',reviewRoutes)
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 });

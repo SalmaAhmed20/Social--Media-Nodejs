@@ -34,7 +34,7 @@ router.post("/create", verify.creationVer, validator.vaildatePostCreation, async
     next(err)
   }
   next()
-
+ 
 })
 router.put("/update/:id", verify.updateVer, validator.vaildatePostUpdate, async (req, res, next) => {
   try {
