@@ -84,6 +84,14 @@ router.post("/login", validator.vaildateSignin, async (req, res, next) => {
     next(err)
   }
 })
+router.get('/profile', verify,
+  async (req, res, next) => {
+    res.json({
+      user: req.user,
+      message: "profile page"
+    })
+  })
+
 //get all users
 router.get('/', verify, async (req, res, next) => {
   if (req.user.role === 'admin') {
