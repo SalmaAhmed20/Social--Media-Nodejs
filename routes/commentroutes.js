@@ -49,4 +49,21 @@ router.put('/:commentid', verify, async (req, res, next) => {
         next(err)
     }
 })
+router.delete('/:commentid', verify, async (req, res, next) => {
+    try {
+        let comment = await Comment.findOne({ '_id': req.params.commentid });
+        console.log(comment.commenterid)
+        console.log(req.user._id)
+        if (comment.commenterid.equals(req.user._id)|| req.user.role==='admin') {
+            if (!req.body.commenterid) {
+                let deleted = await Comment.findByIdAndDelete({ _id: req.params.commentid })
+                res.send(deleted);
+            }
+        } else {
+            throw new CustomError("You can't delete comment not yours")
+        }
+    } catch (err) {
+        next(err)
+    }
+});
 module.exports = router;
