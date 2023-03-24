@@ -94,7 +94,7 @@ router.get('/profile', verify,
 //get all users
 router.get('/', verify, async (req, res, next) => {
   if (req.user.role === 'admin') {
-    const users = await User.find();
+    const users = await User.find().populate('posts');
     res.send(users);
   } else {
     try {
@@ -111,12 +111,12 @@ router.get("/:category", verify, async (req, res) => {
     let keyvald = keyval.toString().split("=");
     let list = [];
     if (keyvald[0] == "id") {
-      list = await User.findOne({ _id: keyvald[1] });
+      list = await User.findOne({ _id: keyvald[1] }).populate('posts');
     } else if (keyvald[0] == "username") {
-      list = await User.findOne({ username: keyvald[1] });
+      list = await User.findOne({ username: keyvald[1] }).populate('posts');
     }
     else if (keyvald[0] == "role") {
-      list = await User.findOne({ role: keyvald[1] });
+      list = await User.findOne({ role: keyvald[1] }).populate('posts');
     }
     res.json(list)
   } else {
