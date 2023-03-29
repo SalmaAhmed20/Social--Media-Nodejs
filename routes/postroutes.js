@@ -36,7 +36,7 @@ router.post("/create", verify.creationVer, validator.vaildatePostCreation, async
     next(err)
   }
   next()
- 
+
 })
 router.put("/update/:id", verify.updateVer, validator.vaildatePostUpdate, async (req, res, next) => {
   try {
@@ -56,8 +56,8 @@ router.delete("/delete/:id", verify.deleteVer, async (req, res, next) => {
     var post = await Post.findOne({ "_id": req.params.id });
     await User.findByIdAndUpdate({ "_id": post.userId }, { $pull: { "posts": post._id } }, { new: true })
     await Post.deleteOne({ "_id": req.params.id });
-    await Review.deleteMany({"postId":req.params.id})
-    await Comment.deleteMany({"postId":req.params.id})
+    await Review.deleteMany({ "postId": req.params.id })
+    await Comment.deleteMany({ "postId": req.params.id })
     res.send("post deleted successfully");
 
   }
@@ -68,12 +68,61 @@ router.delete("/delete/:id", verify.deleteVer, async (req, res, next) => {
 
 
 })
-router.get("/all", verify2,async (req, res, next) => {
+router.get("/all", verify2, async (req, res, next) => {
   try {
     var users = await User.find();
     console.log(users);
-    var posts =  await Post.find().populate({path:"userId"}).populate("commentIds");
+    var posts = await Post.find().populate({ path: "userId" }).populate("commentIds");
     res.send(posts);
+  }
+  catch (err) {
+    next(err)
+  }
+  next()
+
+
+})
+//Top five rated posts
+router.get("/top-five", async (req, res, next) => {
+  try {
+    const pipeline = [
+      {
+        $group:
+        {
+          _id: "$postId",
+          averageReviews: { $avg: "$stars" }
+        }
+      },
+      { $sort: { averageReviews: -1 } },
+      { $limit: 5 },
+      {
+        $lookup: {
+          from: 'posts',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'post'
+        }
+      },
+      {
+        $lookup: {
+          from: 'reviews',
+          localField: '_id',
+          foreignField: 'postId',
+          as: 'reviews'
+        }
+      },
+      {
+        $lookup: {
+          from: 'comments',
+          localField: '_id',
+          foreignField: 'Postid',
+          as: 'comments'
+        }
+      },
+      { "$project": { "post_id": "$_id", _id: 0, "post.text": 1, "averageReviews": 1, "reviews.stars": 1, "comments.text": 1 } },
+    ];
+    var reviews = await Review.aggregate(pipeline).exec();
+    res.send(reviews);
   }
   catch (err) {
     next(err)
