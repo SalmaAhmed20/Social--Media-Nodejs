@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 const JWT = require('jsonwebtoken');
 const { Post } = require('../model/post')
+const { Review } = require('../model/review')
 const { User } = require('../model/user')
+const { Comment } = require('../model/comments')
 const CustomError = require('../helpers/customerr');
 const validator = require('../middleware/validator')
 const verify = require('../middleware/post');
@@ -54,7 +56,8 @@ router.delete("/delete/:id", verify.deleteVer, async (req, res, next) => {
     var post = await Post.findOne({ "_id": req.params.id });
     await User.findByIdAndUpdate({ "_id": post.userId }, { $pull: { "posts": post._id } }, { new: true })
     await Post.deleteOne({ "_id": req.params.id });
-
+    await Review.deleteMany({"postId":req.params.id})
+    await Comment.deleteMany({"postId":req.params.id})
     res.send("post deleted successfully");
 
   }
