@@ -231,5 +231,5 @@ note : postid=3
 </li>
 </ul>
 <h1>Authors</h1>
-<b>Salma Ahmed<b>
+<b>Salma Ahmed<b><br>
 <b>Shrouk Samir<b>
