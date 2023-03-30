@@ -2,6 +2,7 @@
 <img align="right" width=300px height=200px src="https://cdn.freebiesupply.com/logos/thumbs/2x/nodejs-1-logo.png">
 <br>
 <h2>Make your Configuration </h2>
+```http
 <div  style="background-color: gray; width:50% ;padding:10px">
     &#9 PORT="port that server will"
     <br>
@@ -20,7 +21,7 @@
     &#9 CLOUDINARY_API_SECRET=""
     <br>
 </div>
-
+```
 <h2> We have 4 Main Entities </h2>
 <h2>1- User </h2>
 Starting with:
