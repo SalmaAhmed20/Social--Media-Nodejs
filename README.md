@@ -230,3 +230,6 @@ note : postid=3
 <h6>only the user reviewed the post and admin can delete review </h6>
 </li>
 </ul>
+<h1>Authors</h1>
+<h2>Salma Ahmed<h2>
+<h2>Shrouk Samir<h2>
