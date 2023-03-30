@@ -2,25 +2,23 @@
 <img align="right" width=300px height=200px src="https://cdn.freebiesupply.com/logos/thumbs/2x/nodejs-1-logo.png">
 <br>
 <h2>Make your Configuration </h2>
-<div  style="background-color: gray; width:50% ;padding:10px">
-    &#9 PORT="port that server will"
+
+    PORT="port that server will"
     <br>
-    &#9 JWT_SECRET="Part used in generating token"
+    JWT_SECRET="Part used in generating token"
     <br>
-    &#9 SALT_ROUND="Used by bcrypt"
+    SALT_ROUND="Used by bcrypt"
     <br>
-    &#9 //get them by creating your own account on Atlas<br>
-    &#9MONGO_URL=mongodb+srv://< USERNAME >:< PASSWORD >..../< DATABASE_NAME >?retryWrites=true&w=majority
+    //get them by creating your own account on Atlas<br>
+    MONGO_URL=mongodb+srv://< USERNAME >:< PASSWORD >..../< DATABASE_NAME >? ..
     <br>
-    &#9 //get them by creating your own account on cloudnary <br>
-    &#9 CLOUDINARY_CLOUD_NAME=""
+    //get them by creating your own account on cloudnary <br>
+    CLOUDINARY_CLOUD_NAME=""
     <br>
-    &#9 CLOUDINARY_API_KEY=""
+    CLOUDINARY_API_KEY=""
     <br>
-    &#9 CLOUDINARY_API_SECRET=""
+    CLOUDINARY_API_SECRET=""
     <br>
-</div>
-```
 <h2> We have 4 Main Entities </h2>
 <h2>1- User </h2>
 <b> first if it is the first time to use app</b> <br>
