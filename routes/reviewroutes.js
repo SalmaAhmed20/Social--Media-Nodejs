@@ -11,7 +11,19 @@ const verify = require('../middleware/review');
 
 const { default: mongoose } = require('mongoose');
 
-
+router.get('/:postId', verify.readVer, async (req, res, next) => {
+  try{
+    var post = req.post;
+    var reviews = await post.populate({
+      path:'reviews',
+      model: 'Reviews',
+      select: 'stars'
+    })
+    res.send(reviews)
+  } catch(err){
+    next(err)
+  }
+})
 router.post("/", verify.creationVer, validator.vaildateReviewCreation, async (req, res, next) => {
 
   const { _id, stars,postId } = req.body;

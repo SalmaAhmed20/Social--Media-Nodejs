@@ -6,6 +6,36 @@ const { User } = require("../model/user");
 const { Post } = require("../model/post");
 const { jwtSecret } = require('../helpers/config');
 
+async function readVer (req, res, next) {
+    try {
+        const token = req.headers.authorization;
+        if (!token) {
+            const error = new Error("unauthorized");
+            error.statusCode = 401;
+            return next(error);
+        }
+        const { id } = await verifyJwt(token, jwtSecret);
+        const user = await User.findById(id)
+        if (!user) {
+            const error = new Error("unauthorized");
+            error.statusCode = 401;
+            return next(error);
+        }
+        var post = await Post.findById(req.params.postId);
+        console.log(post)
+        if(!post){
+            const error = new Error("post is not found");
+            error.statusCode = 401;
+            return next(error);
+        }
+        req.post = post;
+        next();
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+//create
 async function creationVer (req, res, next) {
     try {
         const token = req.headers.authorization;
@@ -117,5 +147,6 @@ async function deleteVer (req, res, next) {
 module.exports = {
     creationVer,
     updateVer,
-    deleteVer
+    deleteVer,
+    readVer
 }
