@@ -2,7 +2,6 @@
 <img align="right" width=300px height=200px src="https://cdn.freebiesupply.com/logos/thumbs/2x/nodejs-1-logo.png">
 <br>
 <h2>Make your Configuration </h2>
-```http
 <div  style="background-color: gray; width:50% ;padding:10px">
     &#9 PORT="port that server will"
     <br>
@@ -24,8 +23,6 @@
 ```
 <h2> We have 4 Main Entities </h2>
 <h2>1- User </h2>
-Starting with:
-<b>http://localhost/user </b><br>
 <b> first if it is the first time to use app</b> <br>
 <b> You Need to Create Your Admin Manually in Database</b>
 <h6>
@@ -34,7 +31,9 @@ Starting with:
     role:"admin"
 </h6>
 <h1>you have to login first</h1>
-<b>POST http://localhost/user/login </b>
+```http
+POST user/login
+``` 
 <h3>&#9 body</h3>
 <div  style="background-color: gray; width:50% ;padding:10px">
     &#9{
