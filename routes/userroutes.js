@@ -95,7 +95,28 @@ router.get('/profile', verify,
 router.get('/', verify, async (req, res, next) => {
   if (req.user.role === 'admin') {
     const users = await User.find().populate('posts');
-    res.send(users);
+    let elemt = [];
+    for (user of users) {
+
+      let pts = []
+      for (post of user.posts) {
+        let ps =
+        {
+          text: post.text,
+          id: post.id
+        }
+        pts.push(ps)
+      }
+      let usr = {
+        id: user._id,
+        username: user.username,
+        role: user.role,
+        imageURL: user.imageURL,
+        posts: pts
+      }
+      elemt.push(usr);
+    }
+    res.send(elemt);
   } else {
     try {
       throw new CustomError("invalid Operation", 400);

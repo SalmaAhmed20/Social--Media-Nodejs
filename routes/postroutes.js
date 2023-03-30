@@ -14,7 +14,7 @@ const verify2 = require('../middleware/verify');
 const { default: mongoose } = require('mongoose');
 
 
-router.post("/create", verify.creationVer, validator.vaildatePostCreation, async (req, res, next) => {
+router.post("/", verify.creationVer, validator.vaildatePostCreation, async (req, res, next) => {
 
   const { _id, text } = req.body;
   userId = req.user._id
@@ -38,7 +38,7 @@ router.post("/create", verify.creationVer, validator.vaildatePostCreation, async
   next()
 
 })
-router.put("/update/:id", verify.updateVer, validator.vaildatePostUpdate, async (req, res, next) => {
+router.put("/:id", verify.updateVer, validator.vaildatePostUpdate, async (req, res, next) => {
   try {
     await Post.updateOne({ "_id": req.params.id }, { $set: { "text": req.body.text } });
     res.send("post updated successfully");
@@ -51,7 +51,7 @@ router.put("/update/:id", verify.updateVer, validator.vaildatePostUpdate, async 
 
 
 })
-router.delete("/delete/:id", verify.deleteVer, async (req, res, next) => {
+router.delete("/:id", verify.deleteVer, async (req, res, next) => {
   try {
     var post = await Post.findOne({ "_id": req.params.id });
     await User.findByIdAndUpdate({ "_id": post.userId }, { $pull: { "posts": post._id } }, { new: true })
@@ -68,7 +68,7 @@ router.delete("/delete/:id", verify.deleteVer, async (req, res, next) => {
 
 
 })
-router.get("/all", verify2, async (req, res, next) => {
+router.get("/", verify2, async (req, res, next) => {
   try {
     var users = await User.find();
     console.log(users);

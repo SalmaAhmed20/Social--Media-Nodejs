@@ -5,6 +5,7 @@ const validator = require('../middleware/validator');
 const { Post } = require('../model/post');
 const { Comment } = require('../model/comments');
 const CustomError = require('../helpers/customerr');
+const { User } = require('../model/user');
 
 //create comment must be with post id 
 router.post('/:Postid', verify, validator.vaildateCommentCreation, async (req, res, next) => {
@@ -26,11 +27,34 @@ router.post('/:Postid', verify, validator.vaildateCommentCreation, async (req, r
 })
 router.get('/:Postid', verify, async (req, res, next) => {
     await Post.find({ "_id": req.params.Postid }).populate({ path: "commentIds" }).then(async (data) => {
-        res.json(data)
-    }).catch(err)
-    {
-        next(err);
-    };
+        try {
+            let formated = []
+            for (comment of data) {
+                let commets = [];
+                for (commetid of comment.commentIds) {
+                    let user = await User.findOne({ "_id": commetid.commenterid });
+                    let comm = {
+                        commenter: user.username,
+                        commenterId: user._id,
+                        Comment: commetid.text
+
+                    }
+                    commets.push(comm)
+                }
+                let user=await User.findOne({ "_id": comment.userId });
+                let post = {
+                    id: comment._id,
+                    writenby:user.username,
+                    Post: comment.text,
+                    Comments: commets
+                }
+                formated.push(post);
+            }
+            res.json(formated)
+        } catch (err) {
+            next(err);
+        };
+    })
 })
 router.put('/:commentid', verify, async (req, res, next) => {
     try {
@@ -54,7 +78,7 @@ router.delete('/:commentid', verify, async (req, res, next) => {
         let comment = await Comment.findOne({ '_id': req.params.commentid });
         console.log(comment)
         console.log(req.user._id)
-        if (comment.commenterid.equals(req.user._id)|| req.user.role==='admin') {
+        if (comment.commenterid.equals(req.user._id) || req.user.role === 'admin') {
             if (!req.body.commenterid) {
                 let deleted = await Comment.findByIdAndDelete({ _id: req.params.commentid })
                 res.send(deleted);

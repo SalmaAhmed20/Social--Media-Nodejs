@@ -14,7 +14,7 @@ app.use(cors())
 app.get('/', (req, res) => {
     res.send('  Welcome to Social Media world \n Login to see the content using /user/login ')
 })
-app.use('/comments',commentRoutes)
+app.use('/comment',commentRoutes)
 app.use('/user',userRoutes);
 app.use('/post',postRoutes)
 app.use('/review',reviewRoutes)
