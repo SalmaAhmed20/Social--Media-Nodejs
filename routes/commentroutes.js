@@ -34,6 +34,7 @@ router.get('/:Postid', verify, async (req, res, next) => {
                 for (commetid of comment.commentIds) {
                     let user = await User.findOne({ "_id": commetid.commenterid });
                     let comm = {
+                        commentid:commetid._id,
                         commenter: user.username,
                         commenterId: user._id,
                         Comment: commetid.text
