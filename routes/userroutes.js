@@ -36,7 +36,7 @@ const checkRequiredField = (params) => (req, res, next) => {
   next();
 }
 //signup
-router.post("/signup", verify, checkRequiredField(['username', 'role', 'password']), async (req, res, next) => {
+router.post("/", verify, checkRequiredField(['username', 'role', 'password']), async (req, res, next) => {
   if (req.user.role === 'admin') {
     const { username, role, password } = req.body;
     try {
@@ -133,13 +133,57 @@ router.get("/:category", verify, async (req, res) => {
     let list = [];
     if (keyvald[0] == "id") {
       list = await User.findOne({ _id: keyvald[1] }).populate('posts');
+      res.json(list)
     } else if (keyvald[0] == "username") {
-      list = await User.findOne({ username: keyvald[1] }).populate('posts');
+      list = await User.find({ username: keyvald[1] }).populate('posts');
+      let elemt = [];
+      for (user of list) {
+        let pts = []
+        for (post of user.posts) {
+          let ps =
+          {
+            text: post.text,
+            id: post.id
+          }
+          pts.push(ps)
+        }
+        let usr = {
+          id: user._id,
+          username: user.username,
+          role: user.role,
+          imageURL: user.imageURL,
+          posts: pts
+        }
+        elemt.push(usr);
+
+      }
+      res.json(elemt)
     }
     else if (keyvald[0] == "role") {
-      list = await User.findOne({ role: keyvald[1] }).populate('posts');
+      list = await User.find({ role: keyvald[1] }).populate('posts');
+      let elemt = [];
+      for (user of list) {
+
+        let pts = []
+        for (post of user.posts) {
+          let ps =
+          {
+            text: post.text,
+            id: post.id
+          }
+          pts.push(ps)
+        }
+        let usr = {
+          id: user._id,
+          username: user.username,
+          role: user.role,
+          imageURL: user.imageURL,
+          posts: pts
+        }
+        elemt.push(usr);
+      }
+      res.json(elemt)
     }
-    res.json(list)
   } else {
     try {
       throw new CustomError("invalid Operation", 400);
@@ -151,7 +195,7 @@ router.get("/:category", verify, async (req, res) => {
 //update user by id
 router.patch('/:_id', verify, async (req, res, next) => {
   try {
-    const updatedUser = '';
+    let updatedUser = '';
     console.log(req.user.role);
     if (!req.body.role || req.user.role == "admin") {
       if (req.user.role == "admin") {
@@ -160,7 +204,7 @@ router.patch('/:_id', verify, async (req, res, next) => {
         updatedUser = await User.findByIdAndUpdate({ _id: req.params._id }, req.body, { new: true })
       else
         throw new CustomError("You can't update someone's account");
-      res.send(updatedUser);
+      updatedUser? res.send(updatedUser):res.json("no such user");
     } else {
       throw new CustomError("You can't update your role")
     }
@@ -173,7 +217,10 @@ router.patch('/:_id', verify, async (req, res, next) => {
 router.delete("/:_id", verify, async (req, res, next) => {
   if (req.user.role == "admin") {
     const result = await User.findOneAndDelete({ _id: req.params._id });
+    if(result)
     res.json(result)
+    else
+    res.json("no such user")
   } else {
     try {
       throw new CustomError("invalid Operation", 400);

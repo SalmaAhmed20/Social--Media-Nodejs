@@ -12,7 +12,7 @@ const verify = require('../middleware/review');
 const { default: mongoose } = require('mongoose');
 
 
-router.post("/create", verify.creationVer, validator.vaildateReviewCreation, async (req, res, next) => {
+router.post("/", verify.creationVer, validator.vaildateReviewCreation, async (req, res, next) => {
 
   const { _id, stars,postId } = req.body;
  
@@ -33,7 +33,7 @@ router.post("/create", verify.creationVer, validator.vaildateReviewCreation, asy
   next()
  
 })
-router.put("/update/:id", verify.updateVer, validator.vaildateReviewUpdate, async (req, res, next) => {
+router.put("/:id", verify.updateVer, validator.vaildateReviewUpdate, async (req, res, next) => {
   try {
     await Review.updateOne({ "_id": req.params.id }, { $set: { "stars": req.body.stars } });
     res.send("review updated successfully");
@@ -46,7 +46,7 @@ router.put("/update/:id", verify.updateVer, validator.vaildateReviewUpdate, asyn
 
 
 })
-router.delete("/delete/:id", verify.deleteVer, async (req, res, next) => {
+router.delete("/:id", verify.deleteVer, async (req, res, next) => {
   try {
     var review = await Review.findOne({ "_id": req.params.id });
     await Post.findByIdAndUpdate({ "_id": review.postId }, { $pull: { "reviews": review._id } }, { new: true })
